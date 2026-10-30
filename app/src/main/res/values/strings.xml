@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trialwatch</string>
+    <string name="widget_label">Trialwatch</string>
+    <string name="widget_desc">Log a free trial and get an alarm before the card is charged.</string>
+</resources>
