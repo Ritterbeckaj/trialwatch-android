@@ -37,6 +37,34 @@ Requirements: JDK 17+, Android SDK with `platforms;android-35` and `build-tools;
 First run on Android 13+: allow notifications. On Android 12+: allow exact alarms
 (the app shows a banner until you do).
 
+### Prebuilt APK
+
+Grab `trialwatch-1.0.apk` from the [Releases](../../releases) tab and sideload it — no
+toolchain needed. `minSdk 26`, so Android 8.0 and up.
+
+```bash
+adb install -r trialwatch-1.0.apk
+```
+
+### Release signing
+
+`assembleRelease` reads `keystore.properties` from the repo root:
+
+```properties
+storeFile=/path/to/release.jks
+storePassword=…
+keyAlias=trialwatch
+keyPassword=…
+```
+
+That file is gitignored. Without it the release build is simply left unsigned, so
+`assembleRelease` still runs on a clean clone and in CI.
+
+### CI
+
+`.github/workflows/build.yml` assembles the debug APK on every push and pull request,
+validates the Gradle wrapper, and uploads the APK as a build artifact.
+
 ---
 
 ## Put the widget on the home screen
@@ -102,3 +130,9 @@ To support a new service, add one line to `CancelUrls.table`. Unknown names fall
   Android versions; if the system refuses, the notification still posts with sound.
 - Store-billed subscriptions (App Store / Play) must be cancelled in the store's own
   subscription manager. The Apple and Google rows in `CancelUrls` point there on purpose.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

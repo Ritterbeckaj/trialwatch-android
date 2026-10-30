@@ -7,10 +7,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.action.actionParametersOf
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
@@ -18,8 +19,8 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.RowScope
 import androidx.glance.layout.Spacer
-import androidx.glance.layout.defaultWeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
@@ -92,7 +93,7 @@ class TrialWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun Cell(d: Dur) {
+    private fun RowScope.Cell(d: Dur) {
         Box(
             modifier = GlanceModifier
                 .defaultWeight()
@@ -100,8 +101,11 @@ class TrialWidget : GlanceAppWidget() {
                 .cornerRadius(11.dp)
                 .background(CELL)
                 .clickable(
-                    actionStartActivity<QuickAddActivity>(
-                        actionParametersOf(QuickAddActivity.KEY_DUR to d.key)
+                    actionStartActivity(
+                        QuickAddActivity::class.java,
+                        actionParametersOf(
+                            ActionParameters.Key<String>(QuickAddActivity.KEY_DUR) to d.key
+                        )
                     )
                 ),
             contentAlignment = Alignment.Center

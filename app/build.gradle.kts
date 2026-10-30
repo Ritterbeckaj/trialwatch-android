@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,14 @@ plugins {
 android {
     namespace = "io.trialwatch"
     compileSdk = 35
+
+    // Release signing is read from keystore.properties at the repo root, which is
+    // gitignored. Without it (CI, fresh clones) the release build stays unsigned
+    // instead of failing, so `assembleRelease` still works for inspection.
+    val keystoreProps = rootProject.file("keystore.properties")
+    val keystore: Properties? = if (keystoreProps.exists()) {
+        Properties().apply { keystoreProps.inputStream().use { load(it) } }
+    } else null
 
     defaultConfig {
         applicationId = "io.trialwatch"
@@ -29,9 +39,21 @@ android {
         jvmTarget = "17"
     }
 
+    signingConfigs {
+        if (keystore != null) {
+            create("release") {
+                storeFile = file(keystore.getProperty("storeFile"))
+                storePassword = keystore.getProperty("storePassword")
+                keyAlias = keystore.getProperty("keyAlias")
+                keyPassword = keystore.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (keystore != null) signingConfig = signingConfigs.getByName("release")
         }
     }
 }

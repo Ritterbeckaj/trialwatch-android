@@ -6,3 +6,8 @@ build/
 captures/
 .externalNativeBuild/
 .cxx/
+
+# release signing material — never commit
+keystore.properties
+*.jks
+*.keystore

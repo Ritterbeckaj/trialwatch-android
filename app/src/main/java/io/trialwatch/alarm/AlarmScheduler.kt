@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import io.trialwatch.data.Trial
+import androidx.glance.appwidget.updateAll
 import io.trialwatch.data.TrialStore
 import io.trialwatch.widget.TrialWidget
 import kotlinx.coroutines.CoroutineScope
